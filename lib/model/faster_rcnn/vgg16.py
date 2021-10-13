@@ -27,6 +27,7 @@ class vgg16(_fasterRCNN):
 
   def _init_modules(self):
     vgg = models.vgg16()
+    self.pretrained = False
     print(self.pretrained)
     if self.pretrained:
         print("Loading pretrained weights from %s" %(self.model_path))
