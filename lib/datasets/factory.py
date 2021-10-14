@@ -59,6 +59,13 @@ for split in ['train', 'val', 'val1', 'val2', 'test']:
     data_path = 'data/imagenet/ILSVRC'
     __sets[name] = (lambda split=split, devkit_path=devkit_path, data_path=data_path: imagenet(split,devkit_path,data_path))
 
+# set up nih
+for split in ['train', 'val', 'val1', 'val2', 'test']:
+    name = 'nih_{}'.format(split)
+    devkit_path = 'NIH'
+    data_path = 'data/imagenet/ILSVRC'
+    __sets[name] = (lambda split=split, devkit_path=devkit_path, data_path=data_path: imagenet(split,devkit_path,data_path))
+
 def get_imdb(name):
   """Get an imdb (image database) by name."""
   if name not in __sets:
