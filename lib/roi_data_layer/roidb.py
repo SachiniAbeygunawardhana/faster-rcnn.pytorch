@@ -79,6 +79,7 @@ def filter_roidb(roidb):
     # filter the image without bounding box.
     print('before filtering, there are %d images...' % (len(roidb)))
     i = 0
+    print(roidb)
     while i < len(roidb):
       print(len(roidb[i]['boxes']))
       if len(roidb[i]['boxes']) == 0:
