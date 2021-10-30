@@ -168,7 +168,7 @@ class nih(imdb):
 
         row = data['Image Index'] == index
         row_data = data[row]
-
+        print(row_data)
         num_objs = len(row_data)
 
         boxes = np.zeros((num_objs, 4), dtype=np.uint16)
@@ -179,7 +179,7 @@ class nih(imdb):
         ix = 0
 
         for ind, row in row_data.iterrows():  # for each bounding box
-            print(row)
+            # print(row) - not ok, doesnt even come to this point
             x1 = row['x']
             y1 = row['y']
             x2 = x1 + row['w']
