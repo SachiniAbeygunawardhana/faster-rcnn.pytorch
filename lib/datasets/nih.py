@@ -43,7 +43,9 @@ class nih(imdb):
         self._image_set = image_set # trainval/val
         self._devkit_path = self._get_default_path() if devkit_path is None \
             else devkit_path
-        self._data_path = _devkit_path
+        self._data_path = self._devkit_path
+        print('data path' )
+        print(self._data_path)
 
         self._image_ext = '.png'
         self._image_index = self._load_image_set_index() # get all the image names in the text file as a list
