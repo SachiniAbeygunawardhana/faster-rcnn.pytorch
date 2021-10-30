@@ -149,7 +149,7 @@ class nih(imdb):
         # print(data) - ok
         gt_roidb = [self._load_pascal_annotation(index, data)
                     for index in self.image_index]
-        # print(gt_roidb) - not ok
+        print(gt_roidb)
         with open(cache_file, 'wb') as fid:
             pickle.dump(gt_roidb, fid, pickle.HIGHEST_PROTOCOL)
         print('wrote gt roidb to {}'.format(cache_file))
@@ -168,7 +168,7 @@ class nih(imdb):
         # print(data) - ok
         image_name = index + '.png'
         row = data['Image Index'] == image_name
-        print(row)
+        # print(row) - finally ok
         row_data = data[row]
         # print(row_data) # not ok - empty dataframe
         num_objs = len(row_data)
