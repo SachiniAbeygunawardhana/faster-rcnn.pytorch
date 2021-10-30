@@ -146,7 +146,7 @@ class nih(imdb):
         # load annotations file
         filename = os.path.join(self._data_path, 'Annotations', 'BBox_List_2017' + '.csv')
         data = pd.read_csv(filename)
-
+        print(data)
         gt_roidb = [self._load_pascal_annotation(index, data)
                     for index in self.image_index]
 
@@ -155,6 +155,53 @@ class nih(imdb):
         print('wrote gt roidb to {}'.format(cache_file))
 
         return gt_roidb
+
+    def _load_pascal_annotation(self, index, data):
+        """
+        Load image and bounding boxes info from csv file in the PASCAL VOC
+        format.
+        """
+        # print('in load annotations')
+        num_classes = data['Finding Label'].nunique()  # get unique label names
+        classes = data['Finding Label'].unique()  # get unique lable count
+        classes = classes.tolist()
+
+        row = data['Image Index'] == index
+        row_data = data[row]
+
+        num_objs = len(row_data)
+
+        boxes = np.zeros((num_objs, 4), dtype=np.uint16)
+        gt_classes = np.zeros((num_objs), dtype=np.int32)
+        overlaps = np.zeros((num_objs, num_classes), dtype=np.float32)
+        seg_areas = np.zeros((num_objs), dtype=np.float32)  # "Seg" area for pascal is just the box area
+
+        ix = 0
+
+        for ind, row in row_data.iterrows():  # for each bounding box
+
+            x1 = row['x']
+            y1 = row['y']
+            x2 = x1 + row['w']
+            y2 = y1 + row['h']
+
+            boxes[ix, :] = [x1, y1, x2, y2]
+            seg_areas[ix] = (x2 - x1 + 1) * (y2 - y1 + 1)
+
+            cls_name = row['Finding Label']
+            cls = classes.index(cls_name)
+            gt_classes[ix] = cls
+            overlaps[ix, cls] = 1.0
+
+            ix += 1
+
+        overlaps = scipy.sparse.csr_matrix(overlaps)
+
+        return {'boxes': boxes,
+                'gt_classes': gt_classes,
+                'gt_overlaps': overlaps,
+                'flipped': False,
+                'seg_areas': seg_areas}
 
     def selective_search_roidb(self):
         """
@@ -275,52 +322,7 @@ class nih(imdb):
     #             'flipped': False,
     #             'seg_areas': seg_areas}
 
-    def _load_pascal_annotation(self, index, data):
-        """
-        Load image and bounding boxes info from csv file in the PASCAL VOC
-        format.
-        """
-        print('in load annotations')
-        num_classes = data['Finding Label'].nunique()  # get unique label names
-        classes = data['Finding Label'].unique()  # get unique lable count
-        classes = classes.tolist()
 
-        row = data['Image Index'] == index
-        row_data = data[row]
-
-        num_objs = len(row_data)
-
-        boxes = np.zeros((num_objs, 4), dtype=np.uint16)
-        gt_classes = np.zeros((num_objs), dtype=np.int32)
-        overlaps = np.zeros((num_objs, num_classes), dtype=np.float32)
-        seg_areas = np.zeros((num_objs), dtype=np.float32)  # "Seg" area for pascal is just the box area
-
-        ix = 0
-
-        for ind, row in row_data.iterrows():  # for each bounding box
-
-            x1 = row['x']
-            y1 = row['y']
-            x2 = x1 + row['w']
-            y2 = y1 + row['h']
-
-            boxes[ix, :] = [x1, y1, x2, y2]
-            seg_areas[ix] = (x2 - x1 + 1) * (y2 - y1 + 1)
-
-            cls_name = row['Finding Label']
-            cls = classes.index(cls_name)
-            gt_classes[ix] = cls
-            overlaps[ix, cls] = 1.0
-
-            ix += 1
-
-        overlaps = scipy.sparse.csr_matrix(overlaps)
-
-        return {'boxes': boxes,
-                'gt_classes': gt_classes,
-                'gt_overlaps': overlaps,
-                'flipped': False,
-                'seg_areas': seg_areas}
 
 
     def _get_comp_id(self):
