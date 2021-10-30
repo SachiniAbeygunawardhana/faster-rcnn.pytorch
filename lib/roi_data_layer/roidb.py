@@ -81,7 +81,7 @@ def filter_roidb(roidb):
     i = 0
     print(roidb)
     while i < len(roidb):
-      print(len(roidb[i]['boxes']))
+      # print(len(roidb[i]['boxes']))
       if len(roidb[i]['boxes']) == 0:
         del roidb[i]
         i -= 1
