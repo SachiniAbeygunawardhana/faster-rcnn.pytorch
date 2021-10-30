@@ -113,10 +113,9 @@ class imdb(object):
 
   def append_flipped_images(self):
     print('appnded flipped')
-    num_images = self.num_images
-    print(num_images)
-    widths = self._get_widths()
-    print(widths)
+    num_images = self.num_images #ok
+    widths = self._get_widths() #ok
+    print(self.roidb)
     for i in range(num_images):
       boxes = self.roidb[i]['boxes'].copy()
       oldx1 = boxes[:, 0].copy()
