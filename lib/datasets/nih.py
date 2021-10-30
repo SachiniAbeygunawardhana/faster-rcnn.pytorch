@@ -161,10 +161,13 @@ class nih(imdb):
         Load image and bounding boxes info from csv file in the PASCAL VOC
         format.
         """
-        # print('in load annotations')
-        num_classes = data['Finding Label'].nunique()  # get unique label names
         classes = data['Finding Label'].unique()  # get unique lable count
         classes = classes.tolist()
+        classes.insert(0, '__background__')
+
+        num_classes = data['Finding Label'].nunique() + 1  # get unique label names
+
+
         # print(data) - ok
         image_name = index + '.png'
         row = data['Image Index'] == image_name
