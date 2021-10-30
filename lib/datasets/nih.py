@@ -165,10 +165,10 @@ class nih(imdb):
         num_classes = data['Finding Label'].nunique()  # get unique label names
         classes = data['Finding Label'].unique()  # get unique lable count
         classes = classes.tolist()
-
-        row = data['Image Index'] == index
-        row_data = data[row]
-        print(row_data)
+        print(data)
+        # row = data['Image Index'] == index
+        row_data = data[data['Image Index'] == index]
+        # print(row_data) # not ok - empty dataframe
         num_objs = len(row_data)
 
         boxes = np.zeros((num_objs, 4), dtype=np.uint16)
