@@ -106,7 +106,7 @@ class nih(imdb):
         """
         # return os.path.join(cfg.DATA_DIR, 'VOCdevkit' + self._year)
 
-        return os.path.join(cfg.DATA_DIR, 'NIHdevkit')
+        return os.path.join(cfg.DATA_DIR, 'NIH/NIHdevkit')
 
     # def gt_roidb(self):
     #     """
