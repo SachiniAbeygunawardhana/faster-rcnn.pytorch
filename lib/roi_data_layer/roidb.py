@@ -80,6 +80,7 @@ def filter_roidb(roidb):
     print('before filtering, there are %d images...' % (len(roidb)))
     i = 0
     while i < len(roidb):
+      print(len(roidb[i]['boxes']))
       if len(roidb[i]['boxes']) == 0:
         del roidb[i]
         i -= 1
