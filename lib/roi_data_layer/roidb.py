@@ -19,16 +19,19 @@ def prepare_roidb(imdb):
   """
 
   roidb = imdb.roidb
-  if not (imdb.name.startswith('coco')):
+  if not (imdb.name.startswith('coco') or imdb.name.startswith('nih') ):
     sizes = [PIL.Image.open(imdb.image_path_at(i)).size
          for i in range(imdb.num_images)]
          
   for i in range(len(imdb.image_index)):
     roidb[i]['img_id'] = imdb.image_id_at(i)
     roidb[i]['image'] = imdb.image_path_at(i)
-    if not (imdb.name.startswith('coco')):
+    if not (imdb.name.startswith('coco') or imdb.name.startswith('nih') ):
       roidb[i]['width'] = sizes[i][0]
       roidb[i]['height'] = sizes[i][1]
+    if imdb.name.startswith('nih'):
+      roidb[i]['width'] = 1024
+      roidb[i]['height'] = 1024
     # need gt_overlaps as a dense array for argmax
     gt_overlaps = roidb[i]['gt_overlaps'].toarray()
     # max overlap with gt over classes (columns)
@@ -106,14 +109,14 @@ def combined_roidb(imdb_names, training=True):
     return imdb.roidb
   
   def get_roidb(imdb_name):
-    imdb = get_imdb(imdb_name)
+    imdb = get_imdb(imdb_name) # imdb_name = nih_trainval
     print('Loaded dataset `{:s}` for training'.format(imdb.name))
     imdb.set_proposal_method(cfg.TRAIN.PROPOSAL_METHOD)
     print('Set proposal method: {:s}'.format(cfg.TRAIN.PROPOSAL_METHOD))
     roidb = get_training_roidb(imdb)
     return roidb
 
-  roidbs = [get_roidb(s) for s in imdb_names.split('+')]
+  roidbs = [get_roidb(s) for s in imdb_names.split('+')] # s - nih_train
   roidb = roidbs[0]
 
   if len(roidbs) > 1:
