@@ -112,8 +112,8 @@ def combined_roidb(imdb_names, training=True):
   
   def get_roidb(imdb_name):
     imdb = get_imdb(imdb_name) # imdb_name = nih_trainval # create nih object
-    print('get_roidb - roidb')
-    print (imdb.roidb)
+    # print('get_roidb - roidb')
+    # print (imdb.roidb) # no values
     print('Loaded dataset `{:s}` for training'.format(imdb.name))
     imdb.set_proposal_method(cfg.TRAIN.PROPOSAL_METHOD)
     print('Set proposal method: {:s}'.format(cfg.TRAIN.PROPOSAL_METHOD))
