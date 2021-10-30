@@ -166,7 +166,8 @@ class nih(imdb):
         classes = data['Finding Label'].unique()  # get unique lable count
         classes = classes.tolist()
         # print(data) - ok
-        row = data['Image Index'] == index
+        image_name = index + '.png'
+        row = data['Image Index'] == image_name
         print(row)
         row_data = data[row]
         # print(row_data) # not ok - empty dataframe
