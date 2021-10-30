@@ -145,7 +145,7 @@ class nih(imdb):
             return roidb
 
         # load annotations file
-        filename = os.path.join(data_path, 'Annotations', 'BBox_List_2017' + '.csv')
+        filename = os.path.join(self._data_path, 'Annotations', 'BBox_List_2017' + '.csv')
         data = pd.read_csv(filename)
 
         gt_roidb = [self._load_pascal_annotation(index, data)
