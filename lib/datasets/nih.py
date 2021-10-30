@@ -146,10 +146,10 @@ class nih(imdb):
         # load annotations file
         filename = os.path.join(self._data_path, 'Annotations', 'BBox_List_2017' + '.csv')
         data = pd.read_csv(filename)
-        print(data)
+        # print(data) - ok
         gt_roidb = [self._load_pascal_annotation(index, data)
                     for index in self.image_index]
-
+        print(gt_roidb)
         with open(cache_file, 'wb') as fid:
             pickle.dump(gt_roidb, fid, pickle.HIGHEST_PROTOCOL)
         print('wrote gt roidb to {}'.format(cache_file))
