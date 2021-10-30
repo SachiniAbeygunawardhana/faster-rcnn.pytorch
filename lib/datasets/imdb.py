@@ -115,8 +115,8 @@ class imdb(object):
     print('appnded flipped')
     num_images = self.num_images #ok
     widths = self._get_widths() #ok
-    self.roidb = self._roidb_handler # may not fit for other datasets
-    print(self._roidb_handler)
+    # self.roidb = self._roidb_handler # additionally added #AttributeError: can't set attribute
+    # print(self.roidb) #
     for i in range(num_images):
       boxes = self.roidb[i]['boxes'].copy()
       oldx1 = boxes[:, 0].copy()
