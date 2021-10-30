@@ -79,7 +79,7 @@ def filter_roidb(roidb):
     # filter the image without bounding box.
     print('before filtering, there are %d images...' % (len(roidb)))
     i = 0
-    print(roidb)
+    # print(roidb)
     while i < len(roidb):
       # print(len(roidb[i]['boxes']))
       if len(roidb[i]['boxes']) == 0:
@@ -112,6 +112,7 @@ def combined_roidb(imdb_names, training=True):
   
   def get_roidb(imdb_name):
     imdb = get_imdb(imdb_name) # imdb_name = nih_trainval
+    print(imdb)
     print('Loaded dataset `{:s}` for training'.format(imdb.name))
     imdb.set_proposal_method(cfg.TRAIN.PROPOSAL_METHOD)
     print('Set proposal method: {:s}'.format(cfg.TRAIN.PROPOSAL_METHOD))
