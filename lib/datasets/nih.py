@@ -149,7 +149,7 @@ class nih(imdb):
         # print(data) - ok
         gt_roidb = [self._load_pascal_annotation(index, data)
                     for index in self.image_index]
-        print(gt_roidb)
+        # print(gt_roidb) - ok
         with open(cache_file, 'wb') as fid:
             pickle.dump(gt_roidb, fid, pickle.HIGHEST_PROTOCOL)
         print('wrote gt roidb to {}'.format(cache_file))
