@@ -82,10 +82,11 @@ class _fasterRCNN(nn.Module):
         pooled_feat = self._head_to_tail(pooled_feat)
 
         # compute bbox offset
-        bbox_pred = self.RCNN_bbox_pred(pooled_feat)
+        bbox_pred = self.RCNN_bbox_pred(pooled_feat) #nn.Linear(4096, 4 * self.n_classes)
         if self.training and not self.class_agnostic:
             # select the corresponding columns according to roi labels
             bbox_pred_view = bbox_pred.view(bbox_pred.size(0), int(bbox_pred.size(1) / 4), 4)
+            print ('bbox pred size', bbox_pred.size(0),bbox_pred.size(1))
             print ('printing bbox_pred_view')
             print (bbox_pred_view)
             print ('printing index')
