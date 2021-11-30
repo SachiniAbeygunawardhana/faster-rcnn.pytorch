@@ -204,7 +204,7 @@ if __name__ == '__main__':
   imdb, roidb, ratio_list, ratio_index = combined_roidb(args.imdb_name)
   train_size = len(roidb)
 
-  print('{:d} roidb entries'.format(len(roidb)))
+  print('{:d} roidb entries'.format(len(roidb))) # omit - ok (1760)
 
   output_dir = args.save_dir + "/" + args.net + "/" + args.dataset
   if not os.path.exists(output_dir):
@@ -252,7 +252,7 @@ if __name__ == '__main__':
   else:
     print("network is not defined")
     pdb.set_trace()
-
+    # omit - ok
   fasterRCNN.create_architecture()
 
   lr = cfg.TRAIN.LEARNING_RATE
@@ -327,7 +327,7 @@ if __name__ == '__main__':
       rois, cls_prob, bbox_pred, \
       rpn_loss_cls, rpn_loss_box, \
       RCNN_loss_cls, RCNN_loss_bbox, \
-      rois_label = fasterRCNN(im_data, im_info, gt_boxes, num_boxes)
+      rois_label = fasterRCNN(im_data, im_info, gt_boxes, num_boxes) # omit - notok
 
       loss = rpn_loss_cls.mean() + rpn_loss_box.mean() \
            + RCNN_loss_cls.mean() + RCNN_loss_bbox.mean()
