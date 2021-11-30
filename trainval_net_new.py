@@ -330,7 +330,7 @@ if __name__ == '__main__':
       rois_label = fasterRCNN(im_data, im_info, gt_boxes, num_boxes) # omit - notok
 
       print('printing results of fasterrcnn')
-      print(rpn_loss_cls)
+      #print(rpn_loss_cls)
       print(rpn_loss_box)
       print(RCNN_loss_cls)
       print(RCNN_loss_bbox)
