@@ -53,7 +53,9 @@ class vgg16(_fasterRCNN):
     if self.class_agnostic:
       self.RCNN_bbox_pred = nn.Linear(4096, 4)
     else:
-      self.RCNN_bbox_pred = nn.Linear(4096, 4 * self.n_classes)      
+      print(' in vgg n_classes', self.n_classes)
+      self.RCNN_bbox_pred = nn.Linear(4096, 4 * self.n_classes)
+      print(' in vgg bbox pre size', self.RCNN_bbox_pred.size)
 
   def _head_to_tail(self, pool5):
     
