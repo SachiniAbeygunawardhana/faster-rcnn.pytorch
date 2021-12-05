@@ -199,8 +199,8 @@ class _ProposalTargetLayer(nn.Module):
             if fg_rois_per_this_image < rois_per_image:
                 labels_batch[i][fg_rois_per_this_image:] = 0
 
-            print ('printing labels batch')
-            print (labels_batch)
+            # print ('printing labels batch')
+            # print (labels_batch)
 
             for vall in range (len(labels_batch[i])):
                 if (labels_batch[i][vall]>=8):

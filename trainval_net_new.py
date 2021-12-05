@@ -318,15 +318,15 @@ if __name__ == '__main__':
         try:
             data = next(data_iter)
             #  for testing the input type (To be removed)
-            print(data)
+            # print(data)
             with torch.no_grad():
                 im_data.resize_(data[0].size()).copy_(data[0])
                 im_info.resize_(data[1].size()).copy_(data[1])
                 gt_boxes.resize_(data[2].size()).copy_(data[2])
                 num_boxes.resize_(data[3].size()).copy_(data[3])
 
-            print(' printing gt boxes')
-            print(gt_boxes)
+            # print(' printing gt boxes')
+            # print(gt_boxes)
 
             fasterRCNN.zero_grad()
             rois, cls_prob, bbox_pred, \
@@ -334,17 +334,17 @@ if __name__ == '__main__':
             RCNN_loss_cls, RCNN_loss_bbox, \
             rois_label = fasterRCNN(im_data, im_info, gt_boxes, num_boxes)  # omit - notok
 
-            print('printing results of fasterrcnn')
+            # print('printing results of fasterrcnn')
             # print(rpn_loss_cls)
-            print(rpn_loss_box)
-            print(RCNN_loss_cls)
-            print(RCNN_loss_bbox)
+            # print(rpn_loss_box)
+            # print(RCNN_loss_cls)
+            # print(RCNN_loss_bbox)
 
-            print('printing means')
-            print(rpn_loss_cls.mean())
-            print(rpn_loss_box.mean())
-            print(RCNN_loss_cls.mean())
-            print(RCNN_loss_bbox.mean())
+            # print('printing means')
+            # print(rpn_loss_cls.mean())
+            # print(rpn_loss_box.mean())
+            # print(RCNN_loss_cls.mean())
+            # print(RCNN_loss_bbox.mean())
 
             loss = rpn_loss_cls.mean() + rpn_loss_box.mean() \
                    + RCNN_loss_cls.mean() + RCNN_loss_bbox.mean()
