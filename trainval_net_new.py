@@ -348,8 +348,8 @@ if __name__ == '__main__':
 
             loss = rpn_loss_cls.mean() + rpn_loss_box.mean() \
                    + RCNN_loss_cls.mean() + RCNN_loss_bbox.mean()
-            print('loss', loss)
-            print('loss_temp', loss_temp)
+            # print('loss', loss)
+            # print('loss_temp', loss_temp)
             loss_temp += loss.item()  # omit - not ok
 
             # backward
