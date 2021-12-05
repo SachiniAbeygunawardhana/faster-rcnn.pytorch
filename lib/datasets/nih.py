@@ -170,15 +170,7 @@ class nih(imdb):
         # classes.insert(0, '__background__')
         # num_classes = data['Finding Label'].nunique() + 1  # get unique label names
 
-        classes = ['__background__',
-            'Atelectasis',
-            'Cardiomegaly',
-            'Effusion',
-            'Infiltrate',
-            'Mass',
-            'Nodule',
-            'Pneumonia',
-            'Pneumothorax']
+        classes = ['__background__','Atelectasis','Cardiomegaly','Effusion','Infiltrate','Mass','Nodule','Pneumonia','Pneumothorax']
 
         num_classes = len(classes)
 
