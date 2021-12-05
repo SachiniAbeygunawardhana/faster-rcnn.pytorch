@@ -88,7 +88,8 @@ class _fasterRCNN(nn.Module):
         if self.training and not self.class_agnostic:
             # select the corresponding columns according to roi labels
             bbox_pred_view = bbox_pred.view(bbox_pred.size(0), int(bbox_pred.size(1) / 4), 4)
-            print ('bbox pred size', bbox_pred.size(0),bbox_pred.size(1))
+            print ('bbox pred size', bbox_pred.size)
+            print ('bbox pred view size', bbox_pred_view.size)
             print ('printing bbox_pred_view')
             print (bbox_pred_view)
             print ('printing index')
