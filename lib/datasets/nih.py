@@ -47,7 +47,7 @@ class nih(imdb):
         self._data_path = self._devkit_path
         self._classes = ('__background__',  # always index 0
                          'Atelectasis', 'Cardiomegaly', 'Effusion', 'Infiltrate',
-                         'Mass', 'Nodule', 'Pneumonia')
+                         'Mass', 'Nodule', 'Pneumonia', 'Pneumothorax')
         self._class_to_ind = dict(zip(self.classes, xrange(self.num_classes)))
 
         self._image_ext = '.png'
@@ -165,12 +165,22 @@ class nih(imdb):
         Load image and bounding boxes info from csv file in the PASCAL VOC
         format.
         """
-        classes = data['Finding Label'].unique()  # get unique lable count
-        classes = classes.tolist()
-        classes.insert(0, '__background__')
+        # classes = data['Finding Label'].unique()  # get unique lable count
+        # classes = classes.tolist()
+        # classes.insert(0, '__background__')
+        # num_classes = data['Finding Label'].nunique() + 1  # get unique label names
 
-        num_classes = data['Finding Label'].nunique() + 1  # get unique label names
+        classes = ['__background__',
+            'Atelectasis',
+            'Cardiomegaly',
+            'Effusion',
+            'Infiltrate',
+            'Mass',
+            'Nodule',
+            'Pneumonia',
+            'Pneumothorax']
 
+        num_classes = len(classes)
 
         # print(data) - ok
         image_name = index + '.png'
