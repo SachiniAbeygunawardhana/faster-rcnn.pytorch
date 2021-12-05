@@ -203,9 +203,8 @@ class _ProposalTargetLayer(nn.Module):
             # print (labels_batch)
 
             for vall in range (len(labels_batch[i])):
-                if (labels_batch[i][vall]>=8):
-                    labels_batch[i][vall] = 7
-                    print ('LABEL CHANGED')
+                if (labels_batch[i][vall]>=9):
+                    print ('OUT OF INDEX', labels_batch[i][vall])
 
             rois_batch[i] = all_rois[i][keep_inds]
             rois_batch[i,:,0] = i
