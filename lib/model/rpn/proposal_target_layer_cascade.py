@@ -202,6 +202,11 @@ class _ProposalTargetLayer(nn.Module):
             print ('printing labels batch')
             print (labels_batch)
 
+            for vall in range (len(labels_batch[i])):
+                if (labels_batch[i][vall]>=8):
+                    labels_batch[i][vall] = 7
+                    print ('LABEL CHANGED')
+
             rois_batch[i] = all_rois[i][keep_inds]
             rois_batch[i,:,0] = i
 
