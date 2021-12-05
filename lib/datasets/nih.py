@@ -46,7 +46,8 @@ class nih(imdb):
             else devkit_path
         self._data_path = self._devkit_path
         self._classes = ('__background__',  # always index 0
-                         'abnoramal_region')
+                         'Atelectasis', 'Cardiomegaly', 'Effusion', 'Infiltrate',
+                         'Mass', 'Nodule', 'Pneumonia')
         self._class_to_ind = dict(zip(self.classes, xrange(self.num_classes)))
 
         self._image_ext = '.png'
