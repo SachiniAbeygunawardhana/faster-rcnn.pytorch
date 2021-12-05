@@ -199,6 +199,9 @@ class _ProposalTargetLayer(nn.Module):
             if fg_rois_per_this_image < rois_per_image:
                 labels_batch[i][fg_rois_per_this_image:] = 0
 
+            print ('printing labels batch')
+            print (labels_batch)
+
             rois_batch[i] = all_rois[i][keep_inds]
             rois_batch[i,:,0] = i
 
