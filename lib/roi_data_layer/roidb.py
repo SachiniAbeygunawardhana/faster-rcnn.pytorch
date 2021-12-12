@@ -112,7 +112,7 @@ def combined_roidb(imdb_names, training=True):
     return imdb.roidb
   
   def get_roidb(imdb_name):
-    imdb = get_imdb(imdb_name) # imdb_name = nih_trainval # create nih object
+    imdb = get_imdb(imdb_name) # imdb_name = nih_trainval / nih_test # create nih object
     # print('get_roidb - roidb')
     # print (imdb.roidb) # no values
     print('Loaded dataset `{:s}` for training'.format(imdb.name))
@@ -121,7 +121,7 @@ def combined_roidb(imdb_names, training=True):
     roidb = get_training_roidb(imdb)
     return roidb
 
-  roidbs = [get_roidb(s) for s in imdb_names.split('+')] # s - nih_train
+  roidbs = [get_roidb(s) for s in imdb_names.split('+')] # s - nih_train/ nih_test
   roidb = roidbs[0]
 
   if len(roidbs) > 1:

@@ -41,7 +41,7 @@ except NameError:
 class nih(imdb):
     def __init__(self, image_set, devkit_path=None):
         imdb.__init__(self, 'nih_' + image_set)
-        self._image_set = image_set # trainval/val
+        self._image_set = image_set # trainval/test
         self._devkit_path = self._get_default_path() if devkit_path is None \
             else devkit_path
         self._data_path = self._devkit_path

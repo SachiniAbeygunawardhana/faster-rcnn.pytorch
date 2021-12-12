@@ -177,7 +177,7 @@ if __name__ == '__main__':
   # dataset 1
   elif args.dataset == "nih":
       args.imdb_name = "nih_trainval"
-      args.imdbval_name = "nih_val"
+      args.imdbval_name = "nih_test"
       args.set_cfgs = ['ANCHOR_SCALES', '[4, 8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '30']
 
 
@@ -399,7 +399,7 @@ if __name__ == '__main__':
                 start = time.time()
 
         except ValueError:
-            print (' iteration missed - valuerror')
+            #print (' iteration missed - valuerror')
             continue
 
 

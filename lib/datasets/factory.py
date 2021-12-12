@@ -61,7 +61,7 @@ for split in ['train', 'val', 'val1', 'val2', 'test']:
     __sets[name] = (lambda split=split, devkit_path=devkit_path, data_path=data_path: imagenet(split,devkit_path,data_path))
 
 # set up nih
-for split in ['trainval', 'val']:
+for split in ['trainval', 'test']:
     name = 'nih_{}'.format(split)
     __sets[name] = (lambda split=split : nih(split))
 
