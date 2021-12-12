@@ -97,6 +97,7 @@ class nih(imdb):
         """
         # Example path to image set file:
         # NIH/NIHdevkit/ImageSets/trainval.txt
+        print ('data path', self._data_path)
         image_set_file = os.path.join(self._data_path, 'ImageSets',
                                       self._image_set + '.txt')
         assert os.path.exists(image_set_file), \
