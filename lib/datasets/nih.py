@@ -377,7 +377,6 @@ class nih(imdb):
             '{:s}.xml')
         imagesetfile = os.path.join(
             self._devkit_path,
-            'NIH',
             'ImageSets',
             self._image_set + '.txt')
         cachedir = os.path.join(self._devkit_path, 'annotations_cache')
