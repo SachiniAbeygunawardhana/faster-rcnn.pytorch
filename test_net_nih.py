@@ -327,7 +327,9 @@ if __name__ == '__main__':
   with open(det_file, 'wb') as f:
       pickle.dump(all_boxes, f, pickle.HIGHEST_PROTOCOL)
 
-  print('Evaluating detections')
+  print('Evaluating detections') # fine upto here
+  print('printing all boxes')
+  print (all_boxes)
   imdb.evaluate_detections(all_boxes, output_dir)
 
   end = time.time()
