@@ -345,7 +345,7 @@ class nih(imdb):
     def _get_nih_results_file_template(self):
         # VOCdevkit/results/VOC2007/Main/<comp_id>_det_test_aeroplane.txt
         filename = self._get_comp_id() + '_det_' + self._image_set + '_{:s}.txt'
-        filedir = os.path.join(self._devkit_path, 'results', 'NIH', 'Main')
+        filedir = os.path.join(self._devkit_path, 'results', 'NIH')
         if not os.path.exists(filedir):
             os.makedirs(filedir)
         path = os.path.join(filedir, filename)
@@ -379,7 +379,6 @@ class nih(imdb):
             self._devkit_path,
             'NIH',
             'ImageSets',
-            'Main',
             self._image_set + '.txt')
         cachedir = os.path.join(self._devkit_path, 'annotations_cache')
         aps = []
