@@ -372,7 +372,6 @@ class nih(imdb):
     def _do_python_eval(self, output_dir='output'):
         annopath = os.path.join(
             self._devkit_path,
-            'NIH',
             'Annotations',
             '{:s}.xml')
         imagesetfile = os.path.join(
