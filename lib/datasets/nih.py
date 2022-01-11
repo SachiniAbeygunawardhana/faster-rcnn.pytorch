@@ -427,9 +427,9 @@ class nih(imdb):
     def evaluate_detections(self, all_boxes, output_dir):
         self._write_nih_results_file(all_boxes)
         self._do_python_eval(output_dir)
-        if self.config['matlab_eval']:
-            print ('doing mathlab eval')
-            self._do_matlab_eval(output_dir)
+        # if self.config['matlab_eval']:
+        #     print ('doing mathlab eval')
+        #     self._do_matlab_eval(output_dir)
         if self.config['cleanup']:
             for cls in self._classes:
                 if cls == '__background__':
