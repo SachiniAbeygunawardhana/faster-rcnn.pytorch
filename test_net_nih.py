@@ -329,7 +329,7 @@ if __name__ == '__main__':
 
   print('Evaluating detections') # fine upto here
   print('printing all boxes')
-  print (all_boxes)
+  # print (all_boxes)
   imdb.evaluate_detections(all_boxes, output_dir)
 
   end = time.time()
