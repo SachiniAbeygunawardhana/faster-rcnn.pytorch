@@ -146,7 +146,6 @@ def nih_eval(detpath,
     #                          'difficult': difficult,
     #                          'det': det}
     class_recs[imagename] = {'bbox': bbox,
-                             'difficult': difficult,
                              'det': det}
 
   # read detections
