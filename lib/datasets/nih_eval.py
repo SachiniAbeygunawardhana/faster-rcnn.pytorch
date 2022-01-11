@@ -11,58 +11,58 @@ import xml.etree.ElementTree as ET
 import os
 import pickle
 import numpy as np
+from csv import reader
 
-def parse_rec(filename):
-  """ Parse a PASCAL VOC xml file """
-  tree = ET.parse(filename)
+
+def parse_rec(filename, imagename):
+  """
+  filename: path to annotations csv file
+  imagename : image index
+   """
+
   objects = []
-  for obj in tree.findall('object'):
-    obj_struct = {}
-    obj_struct['name'] = obj.find('name').text
-    obj_struct['pose'] = obj.find('pose').text
-    obj_struct['truncated'] = int(obj.find('truncated').text)
-    obj_struct['difficult'] = int(obj.find('difficult').text)
-    bbox = obj.find('bndbox')
-    obj_struct['bbox'] = [int(bbox.find('xmin').text),
-                          int(bbox.find('ymin').text),
-                          int(bbox.find('xmax').text),
-                          int(bbox.find('ymax').text)]
-    objects.append(obj_struct)
+
+  with open(filename, 'r') as read_obj:
+    csv_reader = reader(read_obj)
+    header = next(csv_reader)
+    # Check file as empty
+    if header != None:
+      # Iterate over each row after the header in the csv
+      for row in csv_reader:
+        if row[0] == imagename:  # if row [image Index] == imagename
+          obj_struct = {}
+          obj_struct['label'] = row[1]
+          x1 = float(row[2])
+          y1 = float(row[3])
+          x2 = x1 + float(row[4])
+          y2 = y1 + float(row[5])
+          obj_struct['bbox'] = [x1, y1, x2, y2]
+          objects.append(obj_struct)
 
   return objects
 
 
-def nih_ap(rec, prec, use_07_metric=False):
-  """ ap = voc_ap(rec, prec, [use_07_metric])
-  Compute VOC AP given precision and recall.
-  If use_07_metric is true, uses the
-  VOC 07 11 point method (default:False).
+def nih_ap(rec, prec):
   """
-  if use_07_metric:
-    # 11 point metric
-    ap = 0.
-    for t in np.arange(0., 1.1, 0.1):
-      if np.sum(rec >= t) == 0:
-        p = 0
-      else:
-        p = np.max(prec[rec >= t])
-      ap = ap + p / 11.
-  else:
-    # correct AP calculation
-    # first append sentinel values at the end
-    mrec = np.concatenate(([0.], rec, [1.]))
-    mpre = np.concatenate(([0.], prec, [0.]))
+  Compute NIH AP given precision and recall.
 
-    # compute the precision envelope
-    for i in range(mpre.size - 1, 0, -1):
-      mpre[i - 1] = np.maximum(mpre[i - 1], mpre[i])
+  """
+  # correct AP (average precision) calculation
+  # first append sentinel values at the end
+  mrec = np.concatenate(([0.], rec, [1.]))
+  mpre = np.concatenate(([0.], prec, [0.]))
 
-    # to calculate area under PR curve, look for points
-    # where X axis (recall) changes value
-    i = np.where(mrec[1:] != mrec[:-1])[0]
+  # compute the precision envelope
+  for i in range(mpre.size - 1, 0, -1):
+    mpre[i - 1] = np.maximum(mpre[i - 1], mpre[i])
 
-    # and sum (\Delta recall) * prec
-    ap = np.sum((mrec[i + 1] - mrec[i]) * mpre[i + 1])
+  # to calculate area under PR curve, look for points
+  # where X axis (recall) changes value
+  i = np.where(mrec[1:] != mrec[:-1])[0]
+
+  # and sum (\Delta recall) * prec
+  ap = np.sum((mrec[i + 1] - mrec[i]) * mpre[i + 1])
+
   return ap
 
 
@@ -80,14 +80,16 @@ def nih_eval(detpath,
                               [ovthresh],
                               [use_07_metric])
 
-  Top level function that does the PASCAL VOC evaluation.
+  Top level function that does the NIH evaluation.
 
   detpath: Path to detections
       detpath.format(classname) should produce the detection results file.
+      (the result file for each disease)
   annopath: Path to annotations
-      annopath.format(imagename) should be the xml annotations file.
+     should be the csv annotations file.
   imagesetfile: Text file containing the list of images, one image per line.
-  classname: Category name (duh)
+  (test.txt)
+  classname: Disease Category name (e.g. Atelectasis)
   cachedir: Directory for caching the annotations
   [ovthresh]: Overlap threshold (default = 0.5)
   [use_07_metric]: Whether to use VOC07's 11 point AP computation
@@ -102,16 +104,17 @@ def nih_eval(detpath,
   if not os.path.isdir(cachedir):
     os.mkdir(cachedir)
   cachefile = os.path.join(cachedir, '%s_annots.pkl' % imagesetfile)
+
   # read list of images
   with open(imagesetfile, 'r') as f:
     lines = f.readlines()
-  imagenames = [x.strip() for x in lines]
+  imagenames = [x.strip() for x in lines]  # list of test images
 
   if not os.path.isfile(cachefile):
     # load annotations
     recs = {}
     for i, imagename in enumerate(imagenames):
-      recs[imagename] = parse_rec(annopath.format(imagename))
+      recs[imagename] = parse_rec(annopath, imagename + '.png')  # return for each image
       if i % 100 == 0:
         print('Reading annotation for {:d}/{:d}'.format(
           i + 1, len(imagenames)))
@@ -119,40 +122,46 @@ def nih_eval(detpath,
     print('Saving cached annotations to {:s}'.format(cachefile))
     with open(cachefile, 'wb') as f:
       pickle.dump(recs, f)
+
+  # if there is a cachefile
   else:
     # load
     with open(cachefile, 'rb') as f:
       try:
         recs = pickle.load(f)
       except:
-        recs = pickle.load(f, encoding='bytes')
+        recs = pickle.load(f, encoding='bytes')  # okay
 
   # extract gt objects for this class
   class_recs = {}
   npos = 0
+
   for imagename in imagenames:
-    R = [obj for obj in recs[imagename] if obj['name'] == classname]
+    R = [obj for obj in recs[imagename] if obj['label'] == classname]
     bbox = np.array([x['bbox'] for x in R])
-    difficult = np.array([x['difficult'] for x in R]).astype(np.bool)
+    # difficult = np.array([x['difficult'] for x in R]).astype(np.bool)
     det = [False] * len(R)
-    npos = npos + sum(~difficult)
+    # npos = npos + sum(~difficult)
+    # class_recs[imagename] = {'bbox': bbox,
+    #                          'difficult': difficult,
+    #                          'det': det}
     class_recs[imagename] = {'bbox': bbox,
                              'difficult': difficult,
                              'det': det}
 
-  # read dets
+  # read detections
   detfile = detpath.format(classname)
   with open(detfile, 'r') as f:
-    lines = f.readlines()
+    lines = f.readlines()  # okay
 
-  splitlines = [x.strip().split(' ') for x in lines]
+  splitlines = [x.strip().split(' ') for x in lines]  # each detection for the class
   image_ids = [x[0] for x in splitlines]
   confidence = np.array([float(x[1]) for x in splitlines])
-  BB = np.array([[float(z) for z in x[2:]] for x in splitlines])
+  BB = np.array([[float(z) for z in x[2:]] for x in splitlines])  # bounding boxes
 
   nd = len(image_ids)
-  tp = np.zeros(nd)
-  fp = np.zeros(nd)
+  tp = np.zeros(nd)  # true positives
+  fp = np.zeros(nd)  # false positives
 
   if BB.shape[0] > 0:
     # sort by confidence
@@ -189,12 +198,11 @@ def nih_eval(detpath,
         jmax = np.argmax(overlaps)
 
       if ovmax > ovthresh:
-        if not R['difficult'][jmax]:
-          if not R['det'][jmax]:
-            tp[d] = 1.
-            R['det'][jmax] = 1
-          else:
-            fp[d] = 1.
+        if not R['det'][jmax]:
+          tp[d] = 1.
+          R['det'][jmax] = 1
+        else:
+          fp[d] = 1.
       else:
         fp[d] = 1.
 
@@ -205,6 +213,6 @@ def nih_eval(detpath,
   # avoid divide by zero in case the first detection matches a difficult
   # ground truth
   prec = tp / np.maximum(tp + fp, np.finfo(np.float64).eps)
-  ap = nih_ap(rec, prec, use_07_metric)
+  ap = nih_ap(rec, prec)
 
   return rec, prec, ap
